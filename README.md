@@ -5,15 +5,17 @@ Email: hethen.saini@gmail.com
 
 ## KeyBank Privacy Policy
 
-Hethen Saini built the WallBoard app as a Free app. This SERVICE is provided by Hethen Saini at no cost and is intended for use as is.
+Hethen Saini built the WallBoard app as a Free desktop app. This application is provided by Hethen Saini at no cost and is intended for use as is.
 
 This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.
 
-I will not use or have access to your information.
+Wallboard is a desktop application that provides users with realtime information that is displayed to users in a easy and aesthetically pleasing manner. Wallboard provides its users with the date, time, weather and displays its users google events and tasks on a calendar. The app requests users data for its google events and tasks to display on the app.
+
+I will not use or have access to your information, each users google events and tasks will be updated and shown on the appilcation, but none of the information is retained or used in any other form.
 
 **Information Collection and Use**
 
-For a better experience, while using our App, I require you to provide us with certain personally identifiable information, including but not limited to Google Calendar Events and Tasks. The information that I request will not be retained on any database and can be accessed by nobody.
+For a better experience, while using our App, I require you to provide us with certain personally identifiable information, including but not limited to Google Calendar Events and Tasks. The information that I request will not be retained on any database and cannot be accessed externally.
 
 The app does not use third party services that may collect information used to identify you.
 
