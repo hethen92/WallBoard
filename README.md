@@ -1,4 +1,6 @@
 # WallBoard
+![Logo](https://user-images.githubusercontent.com/22602774/118341257-3b3ec280-b4d3-11eb-8123-970a63595660.png)
+
 
 ## Contact Information
 Email: hethen.saini@gmail.com
