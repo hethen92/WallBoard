@@ -1,3 +1,4 @@
+import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 
 import javax.swing.*;
@@ -21,7 +22,7 @@ public class digitalCalendar extends JPanel {
     dateRow dateRow3;
     dateRow dateRow4;
 
-    digitalCalendar() throws GeneralSecurityException, IOException, ParseException {
+    digitalCalendar(Calendar calService) throws GeneralSecurityException, IOException, ParseException {
 
         this.setSize(new Dimension(1566,880));
         this.setOpaque(false);
@@ -34,13 +35,13 @@ public class digitalCalendar extends JPanel {
         getStartDate();
         reOrderDate = startDate.plusWeeks(1);
 
-        dateRow1 = new dateRow(startDate);
+        dateRow1 = new dateRow(startDate, calService);
         date = startDate.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
-        dateRow2 = new dateRow(date);
+        dateRow2 = new dateRow(date, calService);
         date = date.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
-        dateRow3 = new dateRow(date);
+        dateRow3 = new dateRow(date, calService);
         date = date.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
-        dateRow4 = new dateRow(date);
+        dateRow4 = new dateRow(date, calService);
 
         this.add(dateRow1);
         this.add(dateRow2);

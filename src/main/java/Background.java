@@ -18,10 +18,10 @@ public class Background extends JPanel {
 
         random = new Random();
 
-        number = random.nextInt(2); // Change to amount of pictures
+        number = random.nextInt(17); // Change to amount of pictures
 
         imageHolder = new JLabel();
-        imageHolder.setIcon(makeDayImage(number + ".jpg"));
+        imageHolder.setIcon(makeNightImage(number + ".jpg"));
         imageHolder.setBounds(0,0,1920,1080);
 
         this.add(imageHolder);
@@ -30,7 +30,7 @@ public class Background extends JPanel {
 
     public void setImage(String time){
 
-        number = random.nextInt(2); // Change to amount of pictures
+        number = random.nextInt(17); // Change to amount of pictures
 
 
         if(time.equals("8:00 am")){
@@ -70,7 +70,5 @@ public class Background extends JPanel {
         }
         return new ImageIcon(myPicture);
     }
-
-
 
 }

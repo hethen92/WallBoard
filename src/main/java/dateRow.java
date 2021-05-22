@@ -1,3 +1,5 @@
+import com.google.api.services.calendar.Calendar;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -11,7 +13,7 @@ public class dateRow extends JPanel {
 
     List<CalendarPod> pods;
 
-    dateRow(LocalDate startDate) throws ParseException, GeneralSecurityException, IOException {
+    dateRow(LocalDate startDate, Calendar calService) throws ParseException, GeneralSecurityException, IOException {
 
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 5,0));
         this.setMinimumSize(new Dimension(1566,213));
@@ -22,7 +24,7 @@ public class dateRow extends JPanel {
         int x = 0;
         while (x < 7) {
 
-           CalendarPod p = new CalendarPod(startDate);
+           CalendarPod p = new CalendarPod(startDate, calService);
            pods.add(p);
            this.add(p);
            startDate = startDate.plusDays(1);
