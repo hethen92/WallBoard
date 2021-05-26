@@ -33,14 +33,14 @@ public class Background extends JPanel {
         number = random.nextInt(17); // Change to amount of pictures
 
 
-        if(time.equals("8:00 am")){
+        if(( time.equals("8:00 am") || time.equals("8:01 am") || time.equals("8:02 am"))){
 
             imageHolder.setIcon(makeDayImage(number + ".jpg"));
             imageHolder.setBounds(0,0,1920,1080);
 
             this.add(imageHolder);
 
-        } else if (time.equals("8:00 pm"))  {
+        } else if (time.equals("8:00 pm") || time.equals("8:01 pm") || time.equals("8:02 pm"))  {
 
             imageHolder.setIcon(makeNightImage(number + ".jpg"));
             imageHolder.setBounds(0,0,1920,1080);
@@ -52,23 +52,12 @@ public class Background extends JPanel {
     }
 
     public static ImageIcon makeNightImage(String filename) {
-        BufferedImage myPicture = null;
-        try {
-            myPicture = ImageIO.read(new File("Night Pictures/" + filename));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new ImageIcon(myPicture);
+        return new ImageIcon(Background.class.getResource("Night Pictures/" + filename));
     }
 
     public static ImageIcon makeDayImage(String filename) {
-        BufferedImage myPicture = null;
-        try {
-            myPicture = ImageIO.read(new File("Day Pictures/" + filename));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new ImageIcon(myPicture);
+
+        return new ImageIcon(Background.class.getResource("Day Pictures/" + filename));
     }
 
 }

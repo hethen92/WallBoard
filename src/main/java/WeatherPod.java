@@ -157,13 +157,7 @@ public class WeatherPod extends JPanel {
     }
 
     public static ImageIcon makeImage(String filename) {
-        BufferedImage myPicture = null;
-        try {
-            myPicture = ImageIO.read(new File("Icons/" + filename));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new ImageIcon(myPicture);
+        return new ImageIcon(WeatherPod.class.getResource("Icons/" + filename));
     }
 
 }

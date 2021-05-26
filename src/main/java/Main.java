@@ -14,10 +14,7 @@ import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.TasksScopes;
 
 import javax.swing.*;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -28,7 +25,7 @@ import java.util.List;
 public class Main {
 
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    private static final String TOKENS_DIRECTORY_PATH = "tokens";
+    private static final String TOKENS_DIRECTORY_PATH = "C:\\WallBoardToken";
     private static final List<String> SCOPES = Arrays.asList("https://www.googleapis.com/auth/calendar.events.readonly", TasksScopes.TASKS_READONLY);
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
@@ -49,7 +46,7 @@ public class Main {
 
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+                .setDataStoreFactory(new FileDataStoreFactory(new File(TOKENS_DIRECTORY_PATH)))
                 .setAccessType("offline")
                 .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
@@ -107,6 +104,7 @@ public class Main {
         // Updating all Components
 
         boolean flag = false;
+        boolean timeFlag = false;
         int x = 0, y = 0;
         LocalDate now;
 
@@ -114,14 +112,21 @@ public class Main {
 
             time.setTime();
 
-            backgroundImage.setImage(time.time);
+            if( ( time.time.equals("8:00 am") || time.time.equals("8:01 am") || time.time.equals("8:02 am")|| time.time.equals("8:00 pm") || time.time.equals("8:01 pm") || time.time.equals("8:02 pm")) && !timeFlag){
 
-            if(time.time.equals("12:00 am") && !flag) {
+                backgroundImage.setImage(time.time);
+                timeFlag = true;
+
+            } else if( ( time.time.equals("8:03 am") || time.time.equals("8:04 am") || time.time.equals("8:05 am") ||time.time.equals("8:03 pm") || time.time.equals("8:04 pm") || time.time.equals("8:05 pm")) && timeFlag){
+
+                timeFlag = false;
+            }
+
+
+            if( ( time.time.equals("12:01 am") || time.time.equals("12:02 am") || time.time.equals("12:03 am") ) && !flag) {
 
                 weather.refreshWeather();
-                System.out.println(tasks.maxTime);
                 tasks.updateTime();
-                System.out.println(tasks.maxTime);
                 tasks.refresh();
                 flag = true;
 
@@ -130,30 +135,29 @@ public class Main {
                     calendar.reOrderCalendar();
                 }
 
-            } else if(!time.time.equals("12:00 am") && flag){
+            } else if( ( time.time.equals("12:04 am") || time.time.equals("12:05 am") || time.time.equals("12:06 am") ) && flag){
 
                 flag = false;
 
             }
 
-            if ((x == 10) && !time.time.equals("12:00 am")) {
+            if ((x == 10)) {
 
                 calendar.refreshDateRow();
                 x = 0;
 
             }
-            if ((y == 20) && !time.time.equals("12:00 am")) {
+            if ((y == 20)) {
 
                 tasks.refresh();
                 y = 0;
 
             }
-
             x++;
             y++;
 
             now = LocalDate.now();
-            if(calendar.reOrderDate.isBefore(now)){
+            if(calendar.reOrderDate.isBefore(now) || calendar.reOrderDate.equals(now)){
                 calendar.reOrderCalendar();
             }
 
