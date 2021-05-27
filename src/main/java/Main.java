@@ -112,12 +112,14 @@ public class Main {
 
             time.setTime();
 
-            if( ( time.time.equals("8:00 am") || time.time.equals("8:01 am") || time.time.equals("8:02 am")|| time.time.equals("8:00 pm") || time.time.equals("8:01 pm") || time.time.equals("8:02 pm")) && !timeFlag){
+            if( ( time.time.equalsIgnoreCase("8:00 am") || time.time.equalsIgnoreCase("8:01 am") || time.time.equalsIgnoreCase("8:02 am") ||
+                    time.time.equalsIgnoreCase("8:00 pm") || time.time.equalsIgnoreCase("8:01 pm") || time.time.equalsIgnoreCase("8:02 pm")) && !timeFlag){
 
                 backgroundImage.setImage(time.time);
                 timeFlag = true;
 
-            } else if( ( time.time.equals("8:03 am") || time.time.equals("8:04 am") || time.time.equals("8:05 am") ||time.time.equals("8:03 pm") || time.time.equals("8:04 pm") || time.time.equals("8:05 pm")) && timeFlag){
+            } else if( ( time.time.equalsIgnoreCase("8:03 am") || time.time.equalsIgnoreCase("8:04 am") || time.time.equalsIgnoreCase("8:05 am") ||
+                    time.time.equalsIgnoreCase("8:03 pm") || time.time.equalsIgnoreCase("8:04 pm") || time.time.equalsIgnoreCase("8:05 pm")) && timeFlag){
 
                 timeFlag = false;
             }
