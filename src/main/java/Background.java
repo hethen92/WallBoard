@@ -8,6 +8,7 @@ import java.util.Random;
 public class Background extends JPanel {
 
     JLabel imageHolder;
+    ImageIcon icon;
     int number;
     Random random;
 
@@ -21,7 +22,7 @@ public class Background extends JPanel {
         number = random.nextInt(17); // Change to amount of pictures
 
         imageHolder = new JLabel();
-        imageHolder.setIcon(makeNightImage(number + ".jpg"));
+        imageHolder.setIcon(startImage(number + ".jpg"));
         imageHolder.setBounds(0,0,1920,1080);
 
         this.add(imageHolder);
@@ -51,13 +52,21 @@ public class Background extends JPanel {
         }
     }
 
-    public static ImageIcon makeNightImage(String filename) {
-        return new ImageIcon(Background.class.getResource("Night Pictures/" + filename));
+    public ImageIcon startImage(String filename) {
+        icon = new ImageIcon(Background.class.getResource("Night Pictures/" + filename));
+        return icon;
     }
 
-    public static ImageIcon makeDayImage(String filename) {
+    public ImageIcon makeNightImage(String filename) {
+        icon.getImage().flush();
+        icon = new ImageIcon(Background.class.getResource("Night Pictures/" + filename));
+        return icon;
+    }
 
-        return new ImageIcon(Background.class.getResource("Day Pictures/" + filename));
+    public ImageIcon makeDayImage(String filename) {
+        icon.getImage().flush();
+        icon = new ImageIcon(Background.class.getResource("Day Pictures/" + filename));
+        return icon;
     }
 
 }

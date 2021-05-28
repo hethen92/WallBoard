@@ -9,7 +9,6 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.Calendar;
-import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.TasksScopes;
 
@@ -125,7 +124,7 @@ public class Main {
             }
 
 
-            if( ( time.time.equals("12:01 am") || time.time.equals("12:02 am") || time.time.equals("12:03 am") ) && !flag) {
+            if( ( time.time.equalsIgnoreCase("12:01 am") || time.time.equalsIgnoreCase("12:02 am") || time.time.equalsIgnoreCase("12:03 am") ) && !flag) {
 
                 weather.refreshWeather();
                 tasks.updateTime();
@@ -137,7 +136,7 @@ public class Main {
                     calendar.reOrderCalendar();
                 }
 
-            } else if( ( time.time.equals("12:04 am") || time.time.equals("12:05 am") || time.time.equals("12:06 am") ) && flag){
+            } else if( ( time.time.equalsIgnoreCase("12:04 am") || time.time.equalsIgnoreCase("12:05 am") || time.time.equalsIgnoreCase("12:06 am") ) && flag){
 
                 flag = false;
 
