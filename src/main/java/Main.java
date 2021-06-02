@@ -104,7 +104,7 @@ public class Main {
 
         boolean flag = false;
         boolean timeFlag = false;
-        int x = 0, y = 0;
+        int x = 0;
         LocalDate now;
 
         while(true){
@@ -142,20 +142,15 @@ public class Main {
 
             }
 
-            if ((x == 10)) {
+            if ((x == 20)) {
 
-                calendar.refreshDateRow();
+                calendar.refreshDateRow(); // 120,960 Per Person
+                tasks.refresh(); // 4,320 Per Person
                 x = 0;
 
             }
-            if ((y == 20)) {
-
-                tasks.refresh();
-                y = 0;
-
-            }
             x++;
-            y++;
+
 
             now = LocalDate.now();
             if(calendar.reOrderDate.isBefore(now) || calendar.reOrderDate.equals(now)){
