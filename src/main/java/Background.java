@@ -39,15 +39,10 @@ public class Background extends JPanel {
             imageHolder.setIcon(makeDayImage(number + ".jpg"));
             imageHolder.setBounds(0,0,1920,1080);
 
-            this.add(imageHolder);
-
         } else if (time.equalsIgnoreCase("8:00 pm") || time.equalsIgnoreCase("8:01 pm") || time.equalsIgnoreCase("8:02 pm"))  {
 
             imageHolder.setIcon(makeNightImage(number + ".jpg"));
             imageHolder.setBounds(0,0,1920,1080);
-
-            this.add(imageHolder);
-
 
         }
     }
@@ -68,5 +63,6 @@ public class Background extends JPanel {
         icon = new ImageIcon(Background.class.getResource("Day Pictures/" + filename));
         return icon;
     }
+
 
 }
