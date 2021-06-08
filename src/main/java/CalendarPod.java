@@ -10,6 +10,7 @@ import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 
@@ -120,43 +121,51 @@ public class CalendarPod extends JPanel {
 
     public void refresh() throws IOException, ParseException {
 
-        Events events = service.events().list("primary").setTimeMin(startTime).setTimeMax(endTime).setMaxResults(5).setOrderBy("startTime").setSingleEvents(true).execute();
-        List<Event> items = events.getItems();
+        try {
+            Events events = service.events().list("primary").setTimeMin(startTime).setTimeMax(endTime).setMaxResults(5).setOrderBy("startTime").setSingleEvents(true).execute();
+            List<Event> items = events.getItems();
 
-        int x = 0;
-        for (Event event : items) {
+            int x = 0;
+            for (Event event : items) {
 
-            DateTime start = event.getStart().getDateTime();
-            DateTime end = event.getEnd().getDateTime();
+                DateTime start = event.getStart().getDateTime();
+                DateTime end = event.getEnd().getDateTime();
 
-            if(texts.get(x).getText().equals(event.getSummary()) == false){
-                if(start != null){
+                if(texts.get(x).getText().equals(event.getSummary()) == false){
+                    if(start != null){
 
-                    SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                    SimpleDateFormat format = new SimpleDateFormat("h:mm a");
+                        SimpleDateFormat parse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                        SimpleDateFormat format = new SimpleDateFormat("h:mm a");
 
-                    String s = format.format(parse.parse(start.toString()).getTime());
-                    s = s.replace("a.m.", "").replace("p.m.","");
-                    String e = format.format(parse.parse(end.toString()).getTime());
-                    e = e.replace("a.m.", "am").replace("p.m.","pm");
+                        String s = format.format(parse.parse(start.toString()).getTime());
+                        s = s.replace("a.m.", "").replace("p.m.","");
+                        String e = format.format(parse.parse(end.toString()).getTime());
+                        e = e.replace("a.m.", "am").replace("p.m.","pm");
 
-                    texts.get(x).setText("<html><div style='text-align: center;'>" + event.getSummary() + " " + s + "- " + e + "</div></html>");
+                        texts.get(x).setText("<html><div style='text-align: center;'>" + event.getSummary() + " " + s + "- " + e + "</div></html>");
 
-                } else {
-                    texts.get(x).setText("<html><div style='text-align: center;'>" + event.getSummary() + "</div></html>");
+                    } else {
+                        texts.get(x).setText("<html><div style='text-align: center;'>" + event.getSummary() + "</div></html>");
+                    }
                 }
+
+                x++;
             }
 
-            x++;
+            while (x < 5){
+
+                texts.get(x).setText("");
+                x++;
+
+            }
+
+        } catch (Exception e) {
+
+            LocalDateTime myDateObj = LocalDateTime.now();
+            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss");
+
+            System.out.println("Google Calendar API Failed to get events: " + myDateObj.format(myFormatObj));
         }
-
-        while (x < 5){
-
-            texts.get(x).setText("");
-            x++;
-
-        }
-
     }
 
 }

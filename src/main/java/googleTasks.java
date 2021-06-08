@@ -2,12 +2,14 @@
 import com.google.api.client.util.DateTime;
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.model.Task;
+import jdk.internal.vm.compiler.collections.EconomicMap;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
@@ -130,30 +132,40 @@ public class googleTasks extends JPanel {
 
     void refresh() throws IOException, ParseException {
 
-        com.google.api.services.tasks.model.Tasks t = service.tasks().list("@default").setFields("items(title,due)").setDueMax(maxTime).setMaxResults(8L).execute();
+        try {
 
-        int x = 0;
-        if(t != null){
+            com.google.api.services.tasks.model.Tasks t = service.tasks().list("@default").setFields("items(title,due)").setDueMax(maxTime).setMaxResults(8L).execute();
 
-            List<Task> items = t.getItems();
-            orderTasks(items);
+            int x = 0;
+            if(t != null){
 
-            for (Task task : items) {
+                List<Task> items = t.getItems();
+                orderTasks(items);
 
-                if(text.get(x).getText().equals(task.getTitle()) == false) {
+                for (Task task : items) {
 
-                    text.get(x).setText("<html><div style='text-align: center;'>" + task.getTitle() + "</div></html>");
+                    if(text.get(x).getText().equals(task.getTitle()) == false) {
+
+                        text.get(x).setText("<html><div style='text-align: center;'>" + task.getTitle() + "</div></html>");
+                    }
+
+                    x++;
+
                 }
+            }
 
+            while (x < 8){
+
+                text.get(x).setText("");
                 x++;
 
             }
-        }
+        } catch (Exception e) {
 
-        while (x < 8){
+            LocalDateTime myDateObj = LocalDateTime.now();
+            DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss");
 
-            text.get(x).setText("");
-            x++;
+            System.out.println("Google Tasks API Failed to get Tasks: " + myDateObj.format(myFormatObj));
 
         }
 
