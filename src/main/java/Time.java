@@ -15,7 +15,7 @@ public class Time extends JPanel {
     Time(){
 
         this.setLayout(new FlowLayout(FlowLayout.CENTER,0,-15));
-        this.setSize(new Dimension(410,150));
+        this.setSize(new Dimension(480,150));
         this.setOpaque(false);
 
         timeFormat = new SimpleDateFormat("h:mm a");

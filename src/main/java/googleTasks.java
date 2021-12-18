@@ -1,4 +1,3 @@
-
 import com.google.api.client.util.DateTime;
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.model.Task;
@@ -49,33 +48,95 @@ public class googleTasks extends JPanel {
 
         updateTime();
 
-        com.google.api.services.tasks.model.Tasks t = service.tasks().list("@default").setFields("items(title,due)").setDueMax(maxTime).setMaxResults(8L).execute();
+        com.google.api.services.tasks.model.Tasks t = service.tasks().list("@default").setFields("items(title,due)").setDueMax(maxTime).setMaxResults(14L).execute();
         text = new ArrayList<JLabel>();
 
-       if(t != null){
+        if(t != null){
 
-           List<Task> items = t.getItems();
-           orderTasks(items);
+            List<Task> items = t.getItems();
+            orderTasks(items);
 
-           for (Task task : items) {
+            LocalDateTime now = LocalDate.now().atTime(LocalTime.MAX);
+            LocalDateTime tom = LocalDate.now().plusDays(1).atTime(LocalTime.MAX);
+            LocalDateTime dayAfterTom = LocalDate.now().plusDays(2).atTime(LocalTime.MAX);
 
-               label = new JLabel("<html><div style='text-align: center;'>" + task.getTitle() + "</div></html>", SwingConstants.CENTER);
-               label.setFont(new Font(null, Font.PLAIN, 25));
-               label.setForeground(Color.white);
-               label.setAlignmentX(CENTER_ALIGNMENT);
+            for (int x = 0; x < items.size(); x++) {
 
-               gap = new JPanel();
-               gap.setMaximumSize(new Dimension(50,15));
-               gap.setOpaque(false);
+                if(x > 0){
 
-               text.add(label);
-               this.add(gap);
-               this.add(label);
-           }
-       }
+                    Date a1 = new SimpleDateFormat("yyyy-MM-dd").parse(items.get(x-1).getDue().toString().substring(0,10));
+                    Date b1 = new SimpleDateFormat("yyyy-MM-dd").parse(items.get(x).getDue().toString().substring(0,10));
+                    int result = a1.compareTo(b1);
+
+                    if (result < 0){
+
+                        if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(now)))){
+                            label = new JLabel("<html><div style='text-align: left;'>" + "Today:" + "</div></html>", SwingConstants.LEFT);
+                        }else if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(tom)))){
+                            label = new JLabel("<html><div style='text-align: left;'>" + "Tomorrow:" + "</div></html>", SwingConstants.LEFT);
+                        } else if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(dayAfterTom)))){
+                            label = new JLabel("<html><div style='text-align: left;'>" + "Overmorrow:" + "</div></html>", SwingConstants.LEFT);
+                        } else {
+                            label = new JLabel("<html><div style='text-align: left;'>" + "Past:" + "</div></html>", SwingConstants.LEFT);
+                        }
+
+                        label.setFont(new Font(null, Font.PLAIN, 25));
+                        label.setForeground(Color.white);
+                        label.setAlignmentX(CENTER_ALIGNMENT);
+
+                        gap = new JPanel();
+                        gap.setMaximumSize(new Dimension(50,15));
+                        gap.setOpaque(false);
+
+                        text.add(label);
+                        this.add(gap);
+                        this.add(label);
+                    }
+
+                } else {
+
+                    Date b1 = new SimpleDateFormat("yyyy-MM-dd").parse(items.get(x).getDue().toString().substring(0,10));
+
+                    if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(now)))){
+                        label = new JLabel("<html><div style='text-align: left;'>" + "Today:" + "</div></html>", SwingConstants.LEFT);
+                    }else if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(tom)))){
+                        label = new JLabel("<html><div style='text-align: left;'>" + "Tomorrow:" + "</div></html>", SwingConstants.LEFT);
+                    } else if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(dayAfterTom)))){
+                        label = new JLabel("<html><div style='text-align: left;'>" + "Overmorrow:" + "</div></html>", SwingConstants.LEFT);
+                    } else {
+                        label = new JLabel("<html><div style='text-align: left;'>" + "Past:" + "</div></html>", SwingConstants.LEFT);
+                    }
+
+                    label.setFont(new Font(null, Font.PLAIN, 25));
+                    label.setForeground(Color.white);
+                    label.setAlignmentX(CENTER_ALIGNMENT);
+
+                    gap = new JPanel();
+                    gap.setMaximumSize(new Dimension(50,15));
+                    gap.setOpaque(false);
+
+                    text.add(label);
+                    this.add(gap);
+                    this.add(label);
+                }
+
+                label = new JLabel("<html><div style='text-align: center;'>" + items.get(x).getTitle() + "</div></html>", SwingConstants.CENTER);
+                label.setFont(new Font(null, Font.PLAIN, 25));
+                label.setForeground(Color.white);
+                label.setAlignmentX(CENTER_ALIGNMENT);
+
+                gap = new JPanel();
+                gap.setMaximumSize(new Dimension(50,15));
+                gap.setOpaque(false);
+
+                text.add(label);
+                this.add(gap);
+                this.add(label);
+            }
+        }
 
         int x = text.size();
-        while (x < 8){
+        while (x < 17){ // 14 Tasks description + Today: Tomorrow: Day After Tomorrow
 
             label = new JLabel("<html><div style='text-align: center;'>" + " " + "</div></html>", SwingConstants.CENTER);
             label.setFont(new Font(null, Font.PLAIN, 25));
@@ -97,34 +158,34 @@ public class googleTasks extends JPanel {
 
     void orderTasks(List<Task> items) throws ParseException {
 
-       Collections.sort(items, new Comparator<Task>() {
+        Collections.sort(items, new Comparator<Task>() {
 
-           @Override
-           public int compare(Task a, Task b) {
+            @Override
+            public int compare(Task a, Task b) {
 
-               int result = 0;
+                int result = 0;
 
-               try {
+                try {
 
-                   Date a1 = new SimpleDateFormat("yyyy-MM-dd").parse(a.getDue().toString().substring(0,10));
-                   Date b1 = new SimpleDateFormat("yyyy-MM-dd").parse(b.getDue().toString().substring(0,10));
+                    Date a1 = new SimpleDateFormat("yyyy-MM-dd").parse(a.getDue().toString().substring(0,10));
+                    Date b1 = new SimpleDateFormat("yyyy-MM-dd").parse(b.getDue().toString().substring(0,10));
 
-                   result = a1.compareTo(b1);
+                    result = a1.compareTo(b1);
 
-               } catch (ParseException e) {
-                   e.printStackTrace();
-               }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-               return result;
-           }
-       });
+                return result;
+            }
+        });
 
     }
 
     void updateTime(){
 
-        LocalDateTime now = LocalDate.now().atTime(LocalTime.MAX);
-        Instant instant = now.atZone(ZoneId.systemDefault()).toInstant();
+        LocalDateTime nowPlus2 = LocalDate.now().plusDays(2).atTime(LocalTime.MAX);
+        Instant instant = nowPlus2.atZone(ZoneId.systemDefault()).toInstant();
         long timeInMillis = instant.toEpochMilli();
         maxTime = new DateTime(timeInMillis).toString();
 
@@ -134,30 +195,69 @@ public class googleTasks extends JPanel {
 
         try {
 
-            com.google.api.services.tasks.model.Tasks t = service.tasks().list("@default").setFields("items(title,due)").setDueMax(maxTime).setMaxResults(8L).execute();
+            com.google.api.services.tasks.model.Tasks t = service.tasks().list("@default").setFields("items(title,due)").setDueMax(maxTime).setMaxResults(14L).execute();
 
-            int x = 0;
+            int y = 0;
             if(t != null){
 
                 List<Task> items = t.getItems();
                 orderTasks(items);
 
-                for (Task task : items) {
+                LocalDateTime now = LocalDate.now().atTime(LocalTime.MAX);
+                LocalDateTime tom = LocalDate.now().plusDays(1).atTime(LocalTime.MAX);
+                LocalDateTime dayAfterTom = LocalDate.now().plusDays(2).atTime(LocalTime.MAX);
 
-                    if(text.get(x).getText().equals(task.getTitle()) == false) {
+                for (int x = 0; x < items.size(); x++) {
 
-                        text.get(x).setText("<html><div style='text-align: center;'>" + task.getTitle() + "</div></html>");
+                    if(x > 0){
+
+                        Date a1 = new SimpleDateFormat("yyyy-MM-dd").parse(items.get(x-1).getDue().toString().substring(0,10));
+                        Date b1 = new SimpleDateFormat("yyyy-MM-dd").parse(items.get(x).getDue().toString().substring(0,10));
+                        int result = a1.compareTo(b1);
+
+                        if (result < 0){
+
+                            if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(now)))){
+                                text.get(y).setText("<html><div style='text-align: left;'>" + "Today:" + "</div></html>");
+                            }else if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(tom)))){
+                                text.get(y).setText("<html><div style='text-align: left;'>" + "Tomorrow:" + "</div></html>");
+                            } else if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(dayAfterTom)))){
+                                text.get(y).setText("<html><div style='text-align: left;'>" + "Overmorrow:" + "</div></html>");
+                            } else {
+                                text.get(y).setText("<html><div style='text-align: left;'>" + "Past:" + "</div></html>");
+                            }
+                            text.get(y).setHorizontalAlignment(SwingConstants.LEFT);
+                            y++;
+                        }
+
+                    } else {
+
+                        Date b1 = new SimpleDateFormat("yyyy-MM-dd").parse(items.get(x).getDue().toString().substring(0,10));
+
+                        if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(now)))){
+                            text.get(y).setText("<html><div style='text-align: left;'>" + "Today:" + "</div></html>");
+                        }else if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(tom)))){
+                            text.get(y).setText("<html><div style='text-align: left;'>" + "Tomorrow:" + "</div></html>");
+                        } else if(b1.equals(new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(dayAfterTom)))){
+                            text.get(y).setText("<html><div style='text-align: left;'>" + "Overmorrow:" + "</div></html>");
+                        } else {
+                            text.get(y).setText("<html><div style='text-align: left;'>" + "Past:" + "</div></html>");
+                        }
+                        text.get(y).setHorizontalAlignment(SwingConstants.LEFT);
+                        y++;
                     }
 
-                    x++;
+                    text.get(y).setText("<html><div style='text-align: center;'>" + items.get(x).getTitle() + "</div></html>");
+                    text.get(y).setHorizontalAlignment(SwingConstants.CENTER);
+                    y++;
 
                 }
             }
 
-            while (x < 8){
+            while (y < 17){
 
-                text.get(x).setText("");
-                x++;
+                text.get(y).setText("");
+                y++;
 
             }
         } catch (Exception e) {
@@ -173,5 +273,3 @@ public class googleTasks extends JPanel {
 
 
 }
-
-
