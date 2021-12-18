@@ -34,7 +34,13 @@ public class CalendarPod extends JPanel {
         service = calService;
 
         dateNum = String.valueOf(date.getDayOfMonth());
-        dateNumLabel = new JLabel(dateNum);
+
+        LocalDateTime now = LocalDate.now().atTime(LocalTime.MAX);
+        if(Objects.equals(dateNum, String.valueOf(now.getDayOfMonth()))){
+            dateNumLabel = new JLabel("<HTML><U>" + dateNum + "</U></HTML>");
+        } else {
+            dateNumLabel = new JLabel(dateNum);
+        }
         dateNumLabel.setFont(new Font(null, Font.PLAIN, 23));
         dateNumLabel.setForeground(Color.white);
 
@@ -107,6 +113,12 @@ public class CalendarPod extends JPanel {
     public void newRowTimes(LocalDate date){
 
         dateNum = String.valueOf(date.getDayOfMonth());
+        LocalDateTime now = LocalDate.now().atTime(LocalTime.MAX);
+        if(Objects.equals(dateNum, String.valueOf(now.getDayOfMonth()))){
+            dateNumLabel.setText("<HTML><U>" + dateNum + "</U></HTML>");
+        } else {
+            dateNumLabel.setText(dateNum);
+        }
         dateNumLabel.setText(dateNum);
 
         Instant instant = date.atTime(LocalTime.MIN).atZone(ZoneId.systemDefault()).toInstant();
