@@ -19,7 +19,7 @@ public class Background extends JPanel {
 
         random = new Random();
 
-        number = random.nextInt(19); // Change to amount of pictures
+        number = random.nextInt(20); // Change to amount of pictures
 
         imageHolder = new JLabel();
         imageHolder.setIcon(startImage(number + ".jpg"));
@@ -31,7 +31,7 @@ public class Background extends JPanel {
 
     public void setImage(String time){
 
-        number = random.nextInt(19); // Change to amount of pictures
+        number = random.nextInt(20); // Change to amount of pictures
 
         if(( time.equalsIgnoreCase("8:00 am") || time.equalsIgnoreCase("8:01 am") || time.equalsIgnoreCase("8:02 am"))){
 
